@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CategoryRepository {
     List<Item> findTop10(String genreId, String subgenreId) throws IOException;
+    List<Item> findRand10(String genreId, String subgenreId) throws IOException;
+
 
     Item searchItem(String genreId, String id) throws IOException;
 }

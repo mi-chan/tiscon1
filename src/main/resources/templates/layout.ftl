@@ -120,9 +120,9 @@
         <div class="container">
             <div class="navbar-header">
 
-                <a class="navbar-brand home" href="/" data-animate-hover="bounce">
-                    <img src="/img/TISCON_LOGO.png" alt="TISCON logo" class="hidden-xs">
-                    <img src="/img/TISCON_LOGO.png" alt="TISCON logo" class="visible-xs"><span class="sr-only">go to homepage</span>
+                <a class="navbar-brand home" href="/">
+                    <img src="/img/TIS_picture.png" alt="TISCON logo" class="hidden-xs" width = "300px;">
+                    <img src="/img/TIS_picture.png" alt="TISCON logo" class="visible-xs"><span class="sr-only">go to homepage</span>
                 </a>
                 <div class="navbar-buttons">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">

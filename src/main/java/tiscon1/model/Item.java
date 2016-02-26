@@ -28,4 +28,5 @@ public abstract class Item implements Serializable {
     private String genre;
 
     private String releaseDate;
+
 }

@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class Music extends Item {
     private String artist;
     private String album;
+
 }

@@ -16,6 +16,7 @@ import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  * @author fujiwara
@@ -28,6 +29,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     public static final String MOVIE_ID = "33";
     public static final String MUSIC_ID = "34";
     static final String SEARCH_URL = "https://itunes.apple.com/jp/rss/top{genreName}/limit=10/genre={subgenreId}/json";
+    static final String RAND_URL = "https://itunes.apple.com/jp/rss/top{genreName}/limit=20/genre={subgenreId}/json";
     static final String LOOKUP_ID_URL = "https://itunes.apple.com/lookup?country=JP&id={id}";
 
     /**
@@ -73,6 +75,26 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
         return top10;
     }
+    @Override
+    public List<Item> findRand10(String genreId, String subgenreId) throws IOException {
+        // プロキシ設定が不要の場合
+        RestTemplate rest = new RestTemplate();
+        // プロキシ設定が必要の場合
+        // RestTemplate rest = myRest("proxy.co.jp", 8080);
+
+        String jsonString = rest.getForObject(RAND_URL, String.class, getGenreName(genreId), subgenreId);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> top10Map = (Map<String, Object>) mapper.readValue(jsonString, Map.class).get("feed");
+        List<Map<String, Object>> top10List = (List<Map<String, Object>>) top10Map.get("entry");
+
+        List<Item> top10 = new ArrayList<Item>();
+        for (Map<String, Object> map : top10List) {
+            Map<String, Map<String, Object>> mapId = (Map<String, Map<String, Object>>) map.get("id");
+            top10.add(searchItem(genreId, (String) mapId.get("attributes").get("im:id")));
+        }
+        Collections.shuffle(top10);
+        return top10;
+    }
 
     public Item searchItem(String genreId, String id) throws IOException {
         // プロキシ設定が不要の場合
@@ -106,7 +128,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             music.setImage(imageUrl);
             music.setArtist((String) mapItem.get("artistName"));
             Double price = (Double) mapItem.get("trackPrice");
+//            Double Ppp = (Double) mapItem.get("previewUrl");//てすと
             music.setPrice(String.valueOf(price.intValue()));
+//            music.setPpp(String.valueOf(Ppp.intValue()));
             music.setGenre((String) mapItem.get("primaryGenreName"));
             music.setReleaseDate((String) mapItem.get("releaseDate"));
             return music;

@@ -23,6 +23,8 @@ public class IndexController {
         try {
             model.addAttribute("movieRank", categoryRepository.findTop10(MOVIE_ID, null));
             model.addAttribute("musicRank", categoryRepository.findTop10(MUSIC_ID, null));
+            model.addAttribute("movieRand", categoryRepository.findRand10(MOVIE_ID, null));
+            model.addAttribute("musicRand", categoryRepository.findRand10(MUSIC_ID, null));
         } catch (Exception e) {
             throw new SystemException();
         }
